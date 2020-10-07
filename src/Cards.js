@@ -2,25 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./Cards.css";
-// const fetch = require("node-fetch");
 
 const Cards = () => {
   const [datas, setDatas] = useState([]);
+
   const dataURL =
     "https://raw.githubusercontent.com/Saugat-Adhikari/Hacktoberfest-Nepal-2020/main/Add_Your_Info_Here.json";
   const imgURL = `https://avatars.githubusercontent.com/`;
 
-  async function fetchData() {
-    let response = await axios(dataURL);
-    let result = await response.data;
-    setDatas(result);
-    console.log(result);
-  }
-
   useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(dataURL);
+      const result = response.data;
+      setDatas(result);
+    }
+
     fetchData();
-  });
-  console.log(datas);
+  }, [datas]);
 
   return (
     <div className="cards">
@@ -35,10 +33,18 @@ const Cards = () => {
           <h3>{data.name}</h3>
           <h6>{data.address}</h6>
           <div className="buttons">
-            <form action={`https://www.facebook.com/${data.facebookUsername}`}>
+            <form
+              action={`https://www.facebook.com/${data.facebookUsername}`}
+              method="get"
+              target="_blank"
+            >
               <input className="primary" type="submit" value="Facebook" />
             </form>
-            <form action={`https://www.github.com/${data.githubUsername}`}>
+            <form
+              action={`https://www.github.com/${data.githubUsername}`}
+              method="get"
+              target="_blank"
+            >
               <input className="primary" type="submit" value="GitHub" />
             </form>
           </div>
@@ -52,6 +58,7 @@ const Cards = () => {
           </div>
         </div>
       ))}
+      ;
     </div>
   );
 };
